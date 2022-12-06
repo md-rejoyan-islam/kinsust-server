@@ -51,7 +51,6 @@ const deleteNews = async (req, res) => {
   res.send(result);
 };
 
-
 //export controllers
 
 module.exports = {

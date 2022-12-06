@@ -12,9 +12,12 @@ const allPost = async (req, res) => {
   const size = parseInt(req.query.size);
   const page = parseInt(req.query.page);
   const cursor = postDatabase.find(query);
-  const result = await cursor.skip(size*page).limit(size).toArray();
+  const result = await cursor
+    .skip(size * page)
+    .limit(size)
+    .toArray();
   const count = await postDatabase.estimatedDocumentCount();
-  res.send({count,result});
+  res.send({ count, result });
 };
 
 /**
@@ -44,10 +47,9 @@ const singlePost = async (req, res) => {
   res.send(user);
 };
 
-
 /**
- * @desc delete slider
- * @name DELETE /api/v1/slider
+ * @desc delete post
+ * @name DELETE /api/v1/post
  * @access public
  */
 
@@ -58,13 +60,34 @@ const deletePost = async (req, res) => {
   res.send(result);
 };
 
+/**
+ * @desc update post by comment
+ * @name update /api/v1/post
+ * @access public
+ */
 
+const updatePost = async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: ObjectId(id) };
+  const data = req.body;
+
+  const option = { upsert: true };
+  const updateUser = {
+    $set: {
+      comment: data,
+    },
+  };
+  const result = await postDatabase.updateOne(filter, updateUser, option);
+
+  res.send(result);
+};
 
 //export controllers
 
 module.exports = {
   allPost,
+  updatePost,
   createPost,
   singlePost,
-  deletePost
+  deletePost,
 };

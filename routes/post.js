@@ -4,7 +4,8 @@ const {
   allPost,
   createPost,
   singlePost,
-  deletePost
+  deletePost,
+  updatePost,
 } = require("../controllers/post.controllers");
 
 // all post data routes
@@ -16,9 +17,11 @@ router.post("/api/v1/post", createPost);
 //single post routes
 router.get("/api/v1/post/:id", singlePost);
 
-// slider delete
+// post delete
 router.delete("/api/v1/post/:id", deletePost);
 
+// update post
+router.put("/api/v1/post/:id", updatePost);
 
 //export routes
 module.exports = router;
